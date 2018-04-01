@@ -115,6 +115,24 @@
       capitals, as shown here.</t>
     </section>
 
+    <section title="Introduction to DNS">
+      <t>TBD.</t>
+    </section>
+
+    <section title="Data structure">
+      <t>TBD.</t>
+    </section>
+
+    <section title="Service operation">
+      <t>TBD.</t>
+    </section>
+
+    <section title="Wire protocol">
+      <section title="DNS messages">
+	<t>TBD.</t>
+      </section>
+    </section>
+
     <section title="Acknowledgements">
       <t>TBD.</t>
     </section>
