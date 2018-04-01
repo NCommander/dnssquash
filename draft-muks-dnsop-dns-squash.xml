@@ -97,7 +97,7 @@
       expected to be compatible when talking with current
       implementations of DNS.</t>
 
-      <t>As everything is described here, this document should not
+      <t>As everything is described here, this document need not
       contain any normative references to older DNS RFCs and drafts, but
       for the sake of citation, the source of requirements (where
       applicable) is provided.</t>
