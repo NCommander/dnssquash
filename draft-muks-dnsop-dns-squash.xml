@@ -241,9 +241,201 @@ reddit  apple    example     |             amazon    xkcd
       <t>TBD.</t>
     </section>
 
-    <section title="Wire protocol">
-      <section title="DNS messages">
-        <t>TBD.</t>
+    <section title="Wire Protocol">
+      <section title="Message Overview">
+        <t>All communications inside of the domain protocol are carried in a
+        single format called a message. The top level format of message is
+        divided into 5 sections (some of which are empty in certain cases)
+        shown below:</t>
+
+        <figure>
+          <artwork>
++---------------------+
+|        Header       |
++---------------------+
+|       Question      | the question for the name server
++---------------------+
+|        Answer       | RRs answering the question
++---------------------+
+|      Authority      | RRs pointing toward an authority
++---------------------+
+|      Additional     | RRs holding additional information
++---------------------+
+          </artwork>
+        </figure>
+
+      <t>The header section is always present.  The header includes fields
+      that specify which of the remaining sections are present, and also
+      specify whether the message is a query or a response, a standard query
+      or some other opcode, etc.</t>
+
+      <t>The names of the sections after the header are derived from their
+      use in standard queries.  The question section contains fields that
+      describe a question to a name server.  These fields are a query type
+      (QTYPE), a query class (QCLASS), and a query domain name (QNAME).
+      The last three sections have the same format: a possibly empty list of
+      concatenated resource records (RRs).  The answer section contains RRs
+      that answer the question; the authority section contains RRs that
+      point toward an authoritative name server; the additional records 
+      section contains RRs which relate to the query, but are not strictly
+      answers for the question.</t>
+      </section>
+      <section title="Header section format">
+        <t>The header contains the following fields:</t>
+
+        <figure>
+          <artwork>
+                                    1  1  1  1  1  1
+      0  1  2  3  4  5  6  7  8  9  0  1  2  3  4  5
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                      ID                       |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |QR|   Opcode  |AA|TC|RD|RA|Z |AD|CD|   RCODE   |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    QDCOUNT                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    ANCOUNT                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    NSCOUNT                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+    |                    ARCOUNT                    |
+    +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+          </artwork>
+        </figure>
+
+        <t>which are defined as follows:
+          <list hangIndent="10" style="hanging">
+            <t hangText="ID">A 16 bit identifier assigned by the program that
+            generates any kind of query.  This identifier is copied
+            the corresponding reply and can be used by the requester
+            to match up replies to outstanding queries.</t>
+
+            <t hangText="QR">A one bit field that specifies whether this
+            message is a query (0), or a response (1).</t>
+
+            <t hangText="OPCODE">
+              A four bit field that specifies kind of query in this message.
+              This value is set by the originator of a query and copied into
+              the response.  The values are:
+              <list style="hanging">
+                <t hangText="0">a standard query (QUERY)</t>
+                <t hangText="1">an inverse query (IQUERY)</t>
+                <t hangText="2"> a server status request (STATUS)</t>
+                <t hangText="3">unassigned</t>
+
+                <!-- RFC 1996 -->
+                <t hangText="4">zone change notification (NOTIFY)</t>
+
+                <!-- RFC 2136 -->
+                <t hangText="5">dynamic update of zone information (UPDATE)</t>
+                <t hangText="6-15">reserved for future use</t>
+              </list>
+            </t>
+
+            <t hangText="AA">
+              Authoritative Answer - this bit is valid in responses,
+              and specifies that the responding name server is an
+              authority for the domain name in question section.
+            </t>
+
+            <t>
+              Note that the contents of the answer section may have
+              multiple owner names because of aliases.  The AA bitcorresponds to the name which matches the query name, or
+              the first owner name in the answer section.
+            </t>
+
+            <t hangText="TC">
+              TrunCation - specifies that this message was truncated
+              due to length greater than that permitted on the
+              transmission channel.
+            </t>
+
+            <t hangText="RD">
+              Recursion Desired - this bit may be set in a query and
+              is copied into the response.  If RD is set, it directs
+              the name server to pursue the query recursively.
+              Recursive query support is optional.
+            </t>
+
+            <t hangText="RA">
+              Recursion Available - this be is set or cleared in a
+              response, and denotes whether recursive query support is
+              available in the name server.
+            </t>
+
+            <t hangText="Z">
+              Reversed for future use. Must be zero in all queries
+              and responses.
+            </t>
+
+            <t hangText="AD">
+              Authentic Data - the data in this query is signed and has been validated by the server. <xref target="RFC3655" />
+            </t>
+
+            <t hangText="CD">
+              Checking Disabled - Indicates that DNSSEC signature checking is disabled for this message. <xref target="RFC2535" />
+              <!-- need to figure out how to phrase this better. -->
+            </t>
+            <t hangText="RCODE">
+              Response code - this 4 bit field is set as part of responses.
+              Additional RCODES beyond 15 may be returned as part of the OPT field in an
+              eDNS response. <xref target="RFC6895" /> Header-only RCODEs have the following meanings:
+
+              <list style="hanging">
+                <t hangText="0">No error condition</t>
+                <t hangText="1">
+                  Format error (FORMERR) - The name server was unable to
+                  interpret the query.
+                </t>
+                <t hangText="2">
+                  Server failure (SERVFAIL) - The name server was unable to
+                  process this query due to a problem with the name server.
+                </t>
+                <t hangText="3">
+                  Non-existent domain (NXDOMAIN) - Meaningful only for
+                  responses from an authoritative name server, this code
+                  signifies that the domain name referenced in the query does
+                  not exist.
+                </t>
+                <t hangText="4">
+                  Not Implemented - The name server does not support the
+                  requested kind of query.
+                </t>
+                <t hangText="5">
+                  Refused - The name server refuses to perform the specified
+                  operation for policy reasons. For example, a name server
+                  may not wish to provide the information to the particular
+                  requester, or a name server may not wish to perform a
+                  particular operation (e.g., zone transfer) for particular data.
+                </t>
+                <t hangText="6-15">
+                  Reserved for future use
+                </t>
+              </list>
+            </t>
+
+            <t hangText="QDCOUNT">
+              an unsigned 16 bit integer specifying the number of
+              entries in the question section.
+            </t>
+
+            <t hangText="ANCOUNT">
+              an unsigned 16 bit integer specifying the number of
+              resource records in the answer section.
+            </t>
+
+            <t hangText="NSCOUNT">
+              an unsigned 16 bit integer specifying the number of name
+              server resource records in the authority records
+              section.
+            </t>
+
+            <t hangText="ARCOUNT">
+              an unsigned 16 bit integer specifying the number of
+              resource records in the additional records section.
+            </t>
+          </list>
+      </t>
       </section>
       <section title="DNS message authentication (TSIG)">
         <t>TBD.</t>
@@ -282,6 +474,15 @@ reddit  apple    example     |             amazon    xkcd
       <?rfc include="reference.RFC.1035.xml"?>
       <?rfc include="reference.RFC.2119.xml"?>
       <?rfc include="reference.RFC.8174.xml"?>
+
+      <!-- RCODEs + eDNS, 16 assignment error -->
+      <?rfc include="reference.RFC.6895.xml"?>
+
+      <!-- AD bit and CD bit defined here -->
+      <?rfc include="reference.RFC.2535.xml"?>
+
+      <!-- Current behavior of AD bit -->
+      <?rfc include="reference.RFC.3655.xml"?>
     </references>
 
     <section title="ChangeLog">
