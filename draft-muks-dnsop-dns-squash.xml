@@ -30,7 +30,7 @@
 <!-- end of list of popular I-D processing instructions -->
 <?rfc comments="no" ?>
 <?rfc inline="yes" ?>
-<rfc category="exp" docName="draft-muks-dnsop-dns-squash-00" ipr="trust200902">
+<rfc category="exp" docName="draft-muks-dnsop-dns-squash-01" ipr="trust200902">
 
   <front>
 
@@ -259,6 +259,12 @@ reddit  apple                |             amazon    xkcd
     <section title="ChangeLog">
       <t>
         <list style="symbols">
+
+          <t>
+          draft-muks-dnsop-dns-squash-01
+          <vspace/>
+          Add domain name space diagram and correct some mistakes.
+          </t>
 
           <t>
           draft-muks-dnsop-dns-squash-00
