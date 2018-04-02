@@ -218,7 +218,8 @@ reddit  apple    example     |             amazon    xkcd
       <t>Nodes in the domain name space MUST preserve the character case
       of the octets of their corresonding labels as they are entered
       into the tree, even though tree operations are not
-      case-sensitive.</t>
+      case-sensitive. Label content MUST be stored as provided, as 8-bit
+      octets without transformation.</t>
 
       <t>A domain in the DNS is identified by a DNS name, and consists
       of that part of the domain name space that is at and below the DNS
