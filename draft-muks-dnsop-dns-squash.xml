@@ -244,10 +244,27 @@ reddit  apple                |             amazon    xkcd
       <section title="DNS messages">
         <t>TBD.</t>
       </section>
+      <section title="DNS message authentication (TSIG)">
+        <t>TBD.</t>
+      </section>
     </section>
 
-    <section title="Master zone data">
-      <t>TBD.</t>
+    <section title="Zone data provisioning">
+      <section title="Master files">
+	<t>TBD.</t>
+      </section>
+      <section title="Whole zone transfers (AXFR)">
+	<t>TBD.</t>
+      </section>
+      <section title="Incremental zone transfers (IXFR)">
+	<t>TBD.</t>
+      </section>
+      <section title="Updating zone data (DNS UPDATE)">
+	<t>TBD.</t>
+      </section>
+      <section title="Zone change notifications (NOTIFY)">
+	<t>TBD.</t>
+      </section>
     </section>
 
     <section title="Acknowledgements">
