@@ -167,7 +167,35 @@
       example, a DNS name "example.org." is 13 octets long in wire
       format.</t>
 
-      <t>An example of a domain name space is given below:</t>
+      <t>The following figure shows a part of the current domain name
+      space. Note that the tree is a very small subset of the actual
+      name space.</t>
+
+      <figure>
+        <artwork>
+                       &lt;empty-label&gt;
+                             |
+                             |
+           +-----------------+------------------+
+           |                 |                  |
+          arpa              com                org
+           |                 |                  |
+           |                 |                  |
+       +-----------+         |      +---------+--------+
+       |           |         |      |         |        |
+    in-addr       ip6        |   example  wikipedia   isc
+                             |
+ +--------+------------------+---------------+--------+
+ |        |                  |               |        |
+reddit  apple                |             amazon    xkcd
+                           google
+                             |
+                    +-----+-----+--------+
+                    |     |     |        |
+                   maps  www   mail  translate
+
+        </artwork>
+      </figure>
 
       <t>TBD: Add tree figure from RFC 1034 section 3.4 replacing names
       there with modern examples from current time; describe items in
