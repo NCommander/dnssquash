@@ -229,7 +229,7 @@ reddit  apple    example     |             amazon    xkcd
       contained within the latter. This relationship can be tested by
       seeing if the sub-domain's DNS name ends with the containing DNS
       name.  For example, "sub.example.org." is a sub-domain of
-      "example.org.".</t>
+      "example.org.", "org.", and "." (the root name).</t>
 
       <section title="Delegations">
 	<t>TBD.</t>
