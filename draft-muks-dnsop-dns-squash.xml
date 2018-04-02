@@ -215,9 +215,10 @@ reddit  apple                |             amazon    xkcd
       node could be referred to either as "example", "EXAMPLE" or
       "ExAmPlE" as they all corespond to the same node.</t>
 
-      <t>A node in the domain name space MUST preserve the character
-      case of the octets of a label as they are entered into the tree,
-      even though tree operations are not case-sensitive.</t>
+      <t>Nodes in the domain name space MUST preserve the character case
+      of the octets of their corresonding labels as they are entered
+      into the tree, even though tree operations are not
+      case-sensitive.</t>
 
       <t>A domain in the DNS is identified by a DNS name, and consists
       of that part of the domain name space that is at and below the DNS
