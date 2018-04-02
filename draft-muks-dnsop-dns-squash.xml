@@ -148,13 +148,14 @@
       left to right of the individual labels on the path from the node
       to the root, where each label is represented starting with the
       label length as a single unsigned integer octet with values 0-63,
-      and followed by the octets of the label itself. Thus, the
-      following octets represent a DNS name "example.org." ("example"
-      node followed by root node):</t>
+      and followed by the octets of the label itself. For example, the
+      following octets represent a DNS name "example.org."  ("example"
+      labelled node followed by "org" labelled node followed by root
+      node):</t>
 
       <figure>
         <artwork>
-{ 0x07, 'e', 'x', 'a', 'm', 'p', 'l', 'e', 0x00 }
+{ 0x07, 'e', 'x', 'a', 'm', 'p', 'l', 'e', 0x03, 'o', 'r', 'g', 0x00 }
         </artwork>
       </figure>
 
@@ -162,7 +163,9 @@
       format (i.e., the sum of all label lengths and label octets) MUST
       NOT be larger than 255. This requirement, and the other
       requirement that a label be between 0 to 63 octets, limit the DNS
-      names that may be represented in the domain name space.</t>
+      names that may be represented in the domain name space. For
+      example, a DNS name "example.org." is 13 octets long in wire
+      format.</t>
 
       <t>An example of a domain name space is given below:</t>
 
