@@ -185,9 +185,9 @@
        |           |         |      |         |        |
     in-addr       ip6        |   example  wikipedia   isc
                              |
- +--------+------------------+---------------+--------+
- |        |                  |               |        |
-reddit  apple                |             amazon    xkcd
+ +--------+---------+--------+---------------+--------+
+ |        |         |        |               |        |
+reddit  apple    example     |             amazon    xkcd
                            google
                              |
                     +-----+-----+--------+
