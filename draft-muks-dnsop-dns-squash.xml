@@ -120,7 +120,85 @@
     </section>
 
     <section title="Data structure">
-      <t>TBD.</t>
+      <t>The domain name space is a tree data structure that maps DNS
+      names to some resource data about that name. Each node and leaf in
+      the tree corresponds to a key-value pair, where the key is a DNS
+      name and the value is resource data (which may be empty). The tree
+      is used to lookup resource data corresponding to a DNS name. The
+      DNS makes no distinctions between the uses of the interior nodes
+      and leaves, and this document uses the term "node" to refer to
+      both.</t>
+
+      <t>Each node stores a label, which MUST be 1 to 63 octets in
+      length for all nodes except the root node for which the label MUST
+      be empty.  Sibling nodes (sharing the same parent) MUST NOT have
+      the same label, although the same label can be used for nodes
+      which are not siblings.</t>
+
+      <t>The DNS name of a node is the sequence of the labels on the
+      path from the node to the root of the tree.</t>
+
+      <t>A DNS name is printed as a concatenation left to right of the
+      individual labels on the path from the node to the root, each
+      label trailing with an ASCII period '.' character. Thus a complete
+      printed DNS name ends with a period character. See (TBD: link to
+      proper DNS name presentation formatting).</t>
+
+      <t>In wire format, a DNS name is represented as a concatenation
+      left to right of the individual labels on the path from the node
+      to the root, where each label is represented starting with the
+      label length as a single unsigned integer octet with values 0-63,
+      and followed by the octets of the label itself. Thus, the
+      following octets represent a DNS name "example.org." ("example"
+      node followed by root node):</t>
+
+      <figure>
+        <artwork>
+{ 0x07, 'e', 'x', 'a', 'm', 'p', 'l', 'e', 0x00 }
+        </artwork>
+      </figure>
+
+      <t>The total number of octets that represent a DNS name in wire
+      format (i.e., the sum of all label lengths and label octets) MUST
+      NOT be larger than 255. This requirement, and the other
+      requirement that a label be between 0 to 63 octets, limit the DNS
+      names that may be represented in the domain name space.</t>
+
+      <t>An example of a domain name space is given below:</t>
+
+      <t>TBD: Add tree figure from RFC 1034 section 3.4 replacing names
+      there with modern examples from current time; describe items in
+      the tree</t>
+
+      <t>The octets that make up a label may contain any 8-bit value. In
+      DNS name comparisons, when the highest-order bit of an octet of a
+      label is 0, the value of that octet for comparison purposes is
+      assumed to be a 7-bit ASCII character and MUST be compared without
+      character case-sensitivity (i.e., the corresponding operand of the
+      octet comparison operator must be transformed to ASCII lowercase
+      first and then compared). When the highest-order bit of an octet
+      of a label is 1, it MUST be compared directly without any
+      character case transformations.</t>
+
+      <t>This means that tree operations are not case-sensitive, and a
+      tree may contain a node with label "example", or a node with label
+      "EXAMPLE", but not both as siblings (sharing the same parent). The
+      node could be referred to either as "example", "EXAMPLE" or
+      "ExAmPlE" as they all corespond to the same node.</t>
+
+      <t>A node in the domain name space MUST preserve the character
+      case of the octets of a label as they are entered into the tree,
+      even though tree operations are not case-sensitive.</t>
+
+      <t>A domain in the DNS is identified by a DNS name, and consists
+      of that part of the domain name space that is at or below the DNS
+      name which identifies it.</t>
+
+      <t>A DNS name is a sub-domain of another DNS name if it is
+      contained within the latter. This relationship can be tested by
+      seeing if the sub-domain's DNS name ends with the containing DNS
+      name.  For example, "sub.example.org." is a sub-domain of
+      "example.org.".</t>
     </section>
 
     <section title="Service operation">
@@ -129,7 +207,7 @@
 
     <section title="Wire protocol">
       <section title="DNS messages">
-	<t>TBD.</t>
+        <t>TBD.</t>
       </section>
     </section>
 
