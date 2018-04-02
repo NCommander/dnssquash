@@ -197,9 +197,7 @@ reddit  apple                |             amazon    xkcd
         </artwork>
       </figure>
 
-      <t>TBD: Add tree figure from RFC 1034 section 3.4 replacing names
-      there with modern examples from current time; describe items in
-      the tree</t>
+      <t>TBD: describe items in the tree</t>
 
       <t>The octets that make up a label may contain any 8-bit value. In
       DNS name comparisons, when the highest-order bit of an octet of a
